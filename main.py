@@ -266,8 +266,8 @@ for ind in range(0,num_output_features):
  	data_pred_train[:,ind] = data_pred_train[:,ind]*(max_out[ind]-min_out[ind]) + min_out[ind]
  	data_pred_test[:,ind] = data_pred_test[:,ind]*(max_out[ind]-min_out[ind]) + min_out[ind]
 
-
-fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(nrows=2, ncols=2, figsize=(8, 9.5))
+# Plot test/train accuracy
+fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(nrows=2, ncols=2, figsize=(8, 8))
 ax1.plot(data_out_train[:,0].cpu().detach().numpy(),data_pred_train[:,0].cpu().detach().numpy(),'o')
 ax1.plot([0,max_out[0]],[0,max_out[0]],'--k')
 ax1.set_xlim(min_out[0],max_out[0])
@@ -302,6 +302,15 @@ ax4.set_xlabel("True Width (nm)")
 ax4.set_ylabel("Predicted Width (nm)")
 ax4.set_title('Test Set')
 
+plt.tight_layout()
+plt.savefig("truth_v_prediction_pipeline_1.png")
+#plt.show()
 
-plt.savefig("truth_v_prediction.png")
-plt.show()
+# Plot learning curve
+fig, ax5 = plt.subplots(figsize=(6, 6))
+ax5.semilogy(clock.loss_list_train, label='Train')
+ax5.semilogy(clock.loss_list_test, label='Test')
+ax5.set_xlabel("Epoch")
+ax5.set_ylabel("Mean Squared Error (MSE)")
+plt.legend()
+plt.savefig("learning_curve_pipeline_1.png")
